@@ -1,0 +1,20 @@
+#!/bin/bash
+
+APP_PATH=/Users/pb/Work/go/src/comma-rpc-services/apps/schedule/schedule
+NOHUP_LOG_PATH=/Users/pb/Work/go/src/comma-rpc-services/apps/schedule/nohup-log.log
+
+case $1 in
+start)
+    nohup $APP_PATH >> $NOHUP_LOG_PATH 2>&1 &
+    ;;
+stop)
+    ps -eaf| grep "${APP_PATH}$" | awk '{print $2}'|xargs kill -9
+    ;;
+reload)
+    ps -eaf| grep "${APP_PATH}$" | awk '{print $2}'|xargs kill -9
+    nohup $APP_PATH >> $NOHUP_LOG_PATH 2>&1 &
+    ;;
+*)
+    echo "Usage  : ./rpc [start | stop | reload]"
+    ;;
+esac
